@@ -1,0 +1,7 @@
+name: BorderXP
+version: '1.0-SNAPSHOT'
+main: net.nussi.borderXP.BorderXP
+api-version: '1.21'
+commands:
+  borderxp:
+    description: Sets the origin in this dimension.
