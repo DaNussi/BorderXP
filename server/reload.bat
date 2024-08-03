@@ -1,0 +1,1 @@
+docker exec server-mc-1 rcon-cli reload

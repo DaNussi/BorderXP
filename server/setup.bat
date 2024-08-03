@@ -1,0 +1,1 @@
+curl https://cdn.modrinth.com/data/ExxvCi0y/versions/Rh6hpda3/CommandAPI-9.5.1.jar -o data/plugins/CommandAPI.jar

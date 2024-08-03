@@ -1,0 +1,1 @@
+copy /Y ..\build\libs\BorderXP-*.jar data\plugins
