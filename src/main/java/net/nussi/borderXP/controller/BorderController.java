@@ -19,7 +19,7 @@ import java.util.Optional;
 public class BorderController extends BukkitRunnable implements Listener {
     private final OriginController originController;
     private final BossBarController bossBarController;
-    private BorderShape shape = BorderShapeType.SPHERE.getShape();
+    private BorderShape shape = BorderShapeType.CUBE.getShape();
     private BukkitTask task;
 
     public BorderController(BossBarController bossBarController, OriginController originController) {
@@ -40,39 +40,6 @@ public class BorderController extends BukkitRunnable implements Listener {
     @Override
     public void run() {
 
-        int rays = 20;
-        int steps = 10;
-        double distance = 3;
-
-        double angleIncrement = (2 * Math.PI) / rays;
-        double stepIncrement = distance / steps;
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Location playerLoc = player.getLocation();
-            playerLoc.add(new Vector(0.0, 0.1, 0.0));
-
-            Optional<Location> optionalOrigin = originController.getOrCreateOrigin(player);
-            if(optionalOrigin.isEmpty()) return;
-            Location origin = optionalOrigin.get();
-            World world = player.getWorld();
-
-            for (double angle = 0; angle < 2 * Math.PI; angle+=angleIncrement) {
-                double x = Math.cos(angle);
-                double z = Math.sin(angle);
-                Vector directionVec = new Vector(x, 0, z);
-
-                for (double step = 0; step < steps; step+=stepIncrement) {
-                    Vector offset = directionVec.clone().multiply(step);
-                    Location ray = playerLoc.clone().add(offset);
-
-                    if(shape.isOutside(ray, origin)) {
-                        world.spawnParticle(Particle.DUST, ray, 1, new Particle.DustOptions(Color.RED, 0.4f));
-                        break;
-                    }
-                }
-            }
-
-        }
 
     }
 
@@ -83,9 +50,10 @@ public class BorderController extends BukkitRunnable implements Listener {
         Optional<Location> optionalOrigin = originController.getOrCreateOrigin(player);
         if(optionalOrigin.isEmpty()) return;
         Location origin = optionalOrigin.get();
-        Location goal = event.getTo();
+        Location bottomLocation = player.getLocation();
+        Location topLocation = player.getEyeLocation();
 
-        if(shape.isOutside(goal, origin))
+        if(shape.isOutside(bottomLocation, origin) || shape.isOutside(topLocation, origin))
             player.damage(1);
     }
 
@@ -104,7 +72,7 @@ public class BorderController extends BukkitRunnable implements Listener {
         bossBarController.setProgress(level, levelProgress);
 
         shape.setSize(level + 1);
-        Bukkit.getWorlds().forEach(world -> world.getWorldBorder().setSize(level + 128, 3));
+        Bukkit.getWorlds().forEach(world -> world.getWorldBorder().setSize(level*2 + 128, 3));
     }
 
     public BorderShape getShape() {

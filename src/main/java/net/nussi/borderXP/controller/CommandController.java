@@ -32,8 +32,8 @@ public class CommandController implements Listener {
                                 sender.sendMessage("You have to specify a position.");
                                 return;
                             }
-
                             Location origin = optionalOrigin.get();
+                            origin.add(0,1,0);
                             originController.setOrigin(origin);
 
                             sender.sendMessage("Set origin of world \"" + origin.getWorld().getName() + "\" to " + origin.toVector());

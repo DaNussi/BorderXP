@@ -1,7 +1,9 @@
 package net.nussi.borderXP.shape;
 
 public enum BorderShapeType {
-    SPHERE(new BorderSphere());
+    SPHERE(new BorderSphere()),
+    CYLINDER(new BorderCylinder()),
+    CUBE(new BorderCube());
 
     private BorderShape borderShape;
 

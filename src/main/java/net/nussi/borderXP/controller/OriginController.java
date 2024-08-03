@@ -36,17 +36,9 @@ public class OriginController implements Listener {
         Vector position = origins.get(world.getUID());
         if(position != null) throw new OriginAlreadyExistsException("Origin of world \"" + world.getName() + "\" already exists!");
 
-        Location origin;
-
-        Location respawnLocation = player.getRespawnLocation();
-        Location currentLocation = player.getLocation();
-        if(respawnLocation != null) {
-            origin = respawnLocation;
-        } else {
-            origin = currentLocation;
-        }
-
+        Location origin = player.getLocation();
         position = origin.toVector();
+        position.add(new Vector(0,0.5,0));
 
         origins.put(world.getUID(), position);
         world.getWorldBorder().setCenter(origin);
